@@ -110,6 +110,7 @@
     _root.setAttribute('data-displayresults','true');
     _root.removeAttribute('data-searchinit');
     _results.removeAttribute('aria-hidden');
+    _results.removeAttribute('hidden');
 
     // Display number of results found above the results list
     _results
@@ -222,6 +223,7 @@
       result.parentNode.removeChild(result);
     });
     _results.setAttribute('aria-hidden', 'true');
+    _results.setAttribute('hidden', '');
     _root.removeAttribute('data-displayresults');
   }
 
