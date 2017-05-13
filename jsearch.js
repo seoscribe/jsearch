@@ -29,9 +29,6 @@
     'init': init
   };
 
-  // Search button event wireup, enabling the user to open the search input box
-  _searchbutton.addEventListener('click', showForm, false);
-
   // Index available content by scraping the homepage and retrieving HTMLAnchor elements within
   // the #links element.
   // Attach the remaining event listeners only upon successful downloading of the document index
@@ -52,6 +49,9 @@
     _search = doc.getElementById('search');
     _results = doc.getElementById('results');
     _close = doc.getElementById('close');
+  
+    // Search button event wireup, enabling the user to open the search input box
+    _searchbutton.addEventListener('click', showForm, false);
 
     _xhr.open('GET', _src, true);
 
