@@ -236,7 +236,7 @@
   }
   
   function generateID(idx) {
-    return ('jsrch_' + idx + '_') + (new Date().getTime() / 1e10).toFixed(3);
+    return ('jsrch_' + idx + '_') + (new Date().getTime() / 1e10);
   }
 
 })(window, document);
