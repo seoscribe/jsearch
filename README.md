@@ -22,5 +22,5 @@ Say you had a list of blog article links, and the containing element of that lis
 
     window.jsearch.init({
       'src': 'http://www.myblog.com',
-      'src_el': #blog_list
+      'src_el': '#blog_list'
     });
