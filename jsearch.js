@@ -48,8 +48,8 @@
     var _xhr = new XMLHttpRequest();
 
     if (typeof config !== 'undefined') {
-      _src = !!config.src             ? config.src : _src; // url to scrape
-      _src_el = !!config.src_el       ? config.src_el : _src; // element to scrape (if not whole page)
+      _src       = !!config.src       ? config.src       : _src;       // url to scrape
+      _src_el    = !!config.src_el    ? config.src_el    : _src;       // element to scrape (if not whole page)
       _append_to = !!config.append_to ? config.append_to : _append_to; // element to append search button to
     }
     
@@ -58,9 +58,9 @@
 
     // Now we've added that HTML, let's store some references
     _searchbutton = doc.getElementById(_UI.button);
-    _search = doc.getElementById(_UI.search);
-    _results = doc.getElementById(_UI.results);
-    _close = doc.getElementById(_UI.close);
+    _search       = doc.getElementById(_UI.search);
+    _results      = doc.getElementById(_UI.results);
+    _close        = doc.getElementById(_UI.close);
   
     // Search button event wireup, enabling the user to open the search input box
     _searchbutton.addEventListener('click', showForm, false);
@@ -128,7 +128,12 @@
   // Grind the index down using clean, functional methods
   function getSearchResults (query, data) {
     return data.filter(function(link) {
-      return !!occursAtLeastOnce(query.toLowerCase(), [link.getAttribute('href').toLowerCase() || '', link.textContent.toLowerCase() || '', link.getAttribute('title').toLowerCase() || '']);
+      var _attrs = [
+        !!link.getAttribute('href')  ? link.getAttribute('href').toLowerCase()  : '', 
+        !!link.textContent           ? link.textContent.toLowerCase()           : '', 
+        !!link.getAttribute('title') ? link.getAttribute('title').toLowerCase() : ''
+      ];
+      return !!occursAtLeastOnce(query.toLowerCase(), _attrs);
     }).map(function(link) {
       var _title = link.getAttribute('title');
       var _url = link.getAttribute('href');
