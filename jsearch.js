@@ -128,7 +128,7 @@
   // Grind the index down using clean, functional methods
   function getSearchResults (query, data) {
     return data.filter(function(link) {
-      return !!occursAtLeastOnce(query.toLowerCase(), [link.getAttribute('href').toLowerCase(), link.textContent.toLowerCase(), link.getAttribute('title').toLowerCase()]);
+      return !!occursAtLeastOnce(query.toLowerCase(), [link.getAttribute('href').toLowerCase() || '', link.textContent.toLowerCase() || '', link.getAttribute('title').toLowerCase() || '']);
     }).map(function(link) {
       var _title = link.getAttribute('title');
       var _url = link.getAttribute('href');
