@@ -27,7 +27,7 @@
   _search = doc.getElementById('search');
   _results = doc.getElementById('results');
   _close = doc.getElementById('close');
-  _src = win.location.origin;
+  _src = location.origin;
   _src_el = 'html';
 
   // Initiate request for index and attach submit events
