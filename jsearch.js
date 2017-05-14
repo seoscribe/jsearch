@@ -143,7 +143,7 @@
         'title': _title,
         'url': _url,
         'content': _content,
-        'ldistance': bestOfThree(query.toLowerCase(), [_title.toLowerCase(), _url.toLowerCase(), _content.toLowerCase()])
+        'ldistance': bestOf(query.toLowerCase(), [_title.toLowerCase(), _url.toLowerCase(), _content.toLowerCase()])
       };
     }).sort(function(p, q) {
       if (p.ldistance < q.ldistance) { return -1; }
