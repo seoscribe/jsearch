@@ -166,7 +166,7 @@
   // Sort the array by shortest distance and return shortest distance item
   // This enables us to check href, title attributes and textContent for
   // indications of a good match.
-  function bestOfThree (query, candidates) {
+  function bestOf (query, candidates) {
     return candidates.map(function(candidate) {
       return getLevenshteinDistance(query, candidate);
     }).sort(function(p, q) {
