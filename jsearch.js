@@ -35,8 +35,10 @@
      #' + _UI.search +'>input, \
      #' + _UI.results + ', \
      #' + _UI.close + '{box-sizing:border-box;font-size:16px;} \
-     #' + _UI.button+',#' + _UI.search + '{position:fixed;transition-property:-webkit-transform,opacity,visibility;transition-property:transform,opacity,visibility;transition-duration:200ms;transition-timing-function:cubic-bezier(0.4,0,0.2,1);} \
-     #' + _UI.button + ',#' + _UI.close + '{-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none;-o-appearance:none;appearance:none;} \
+     #' + _UI.button+', \
+     #' + _UI.search + '{position:fixed;transition-property:-webkit-transform,opacity,visibility;transition-property:transform,opacity,visibility;transition-duration:200ms;transition-timing-function:cubic-bezier(0.4,0,0.2,1);} \
+     #' + _UI.button + ', \
+     #' + _UI.close + '{-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none;-o-appearance:none;appearance:none;} \
      #' + _UI.button + '{bottom:2.5em;right:3em;background-color:#4183C4;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%3E%3Cpath%20fill%3D%22%23fff%22%20d%3D%22M15.5%2014h-.79l-.28-.27C15.41%2012.59%2016%2011.11%2016%209.5%2016%205.91%2013.09%203%209.5%203S3%205.91%203%209.5%205.91%2016%209.5%2016c1.61%200%203.09-.59%204.23-1.57l.27.28v.79l5%204.99L20.49%2019l-4.99-5zm-6%200C7.01%2014%205%2011.99%205%209.5S7.01%205%209.5%205%2014%207.01%2014%209.5%2011.99%2014%209.5%2014z%22%3E%3C/path%3E%3C/g%3E%3C/svg%3E");background-repeat:no-repeat;background-size:1.5em 1.5em;background-position:50% 50%;color:#fff;width:2.75em;height:2.75em;box-shadow:0 0 30px -10px rgba(0,0,0,0.4);z-index:100;margin:0;padding:0;border:0 none;cursor:pointer;z-index:19001;} \
      #' + _UI.search + '{bottom:2.5em;right:3em;border:0.4em solid #4183C4;z-index:19000;width:auto;height:auto;opacity:0;visibility:hidden;-webkit-transform:scaleX(0);transform:scaleX(0);-webkit-transform-origin:100% 50%;transform-origin:100% 50%;} \
      html[data-searchinit] #' + _UI.search + '{opacity:1;visibility:visible;-webkit-transform:scaleX(1);transform:scaleX(1);} \
