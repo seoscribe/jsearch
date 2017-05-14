@@ -35,7 +35,7 @@
      #' + _UI.search + ', \
      #' + _UI.search +'>input, \
      #' + _UI.results + ', \
-     #' + _UI.close + '{box-sizing:border-box;font-size:16px;} \
+     #' + _UI.close + '{box-sizing:border-box;font-size:15px;} \
      #' + _UI.button+', \
      #' + _UI.search + '{position:fixed;transition-property:-webkit-transform,opacity,visibility;transition-property:transform,opacity,visibility;transition-duration:200ms;transition-timing-function:cubic-bezier(0.4,0,0.2,1);} \
      #' + _UI.button + ', \
