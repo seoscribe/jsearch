@@ -286,14 +286,3 @@
   }
 
 })(window, document);
-
-// Usage:
-// window.jsearch.init();
-
-// or, with options:
-// window.jsearch.init({
-  // 'src':'http://simpl.info',
-  // 'src_el': '#links',
-  // 'append_to': 'body > main',
-  // 'attrs': ['href, 'title']
-// });
