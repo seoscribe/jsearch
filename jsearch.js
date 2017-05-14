@@ -235,11 +235,11 @@
       for (row1 = [j = 0]; to_match[++j];) {
         distance = row2[j] = i ?
           Math.min(
-            row2[--j],
-            Math.min(
+            row2[--j], 
+            (Math.min(
               row1[j] - (string[i - 1] === to_match[j]),
               row1[++j] = row2[j]
-            )
+            ))
           ) + 1 : j;
       }
     }
@@ -281,6 +281,8 @@
     }
   }
 
+  // Use to create unique element IDs for the injected markup
+  // necessary to avoid possible conflicts with existing elements on any given page
   function generateID(idx) {
     return ('jsrch_' + idx + '_' + new Date().getTime());
   }
