@@ -15,7 +15,7 @@
 
   // These don't exist yet
   var _searchbutton, _search, _results, _close;
-  var _links, _src, _src_el, _append_to;
+  var _links, _src, _src_el, _append_to, _attrs;
   var j = 0;
   var _UI = {
     'search': '',
@@ -32,14 +32,12 @@
   doc.head.insertAdjacentHTML('beforeend', '<style>#' + _UI.button + ',#' + _UI.search + ',#' + _UI.search +'>input,#' + _UI.results + ',#' + _UI.close + '{box-sizing:border-box}#'+_UI.button+',#' + _UI.search + '{position:fixed;transition-property:-webkit-transform,opacity,visibility;transition-property:transform,opacity,visibility;transition-duration:200ms;transition-timing-function:cubic-bezier(0.4,0,0.2,1);}#' + _UI.button + ',#' + _UI.close + '{-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none;-o-appearance:none;appearance:none;}#' + _UI.button + '{top:2.5em;right:3em;background-color:#4183C4;background-image:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%3E%3Cpath%20fill%3D%22%23fff%22%20d%3D%22M15.5%2014h-.79l-.28-.27C15.41%2012.59%2016%2011.11%2016%209.5%2016%205.91%2013.09%203%209.5%203S3%205.91%203%209.5%205.91%2016%209.5%2016c1.61%200%203.09-.59%204.23-1.57l.27.28v.79l5%204.99L20.49%2019l-4.99-5zm-6%200C7.01%2014%205%2011.99%205%209.5S7.01%205%209.5%205%2014%207.01%2014%209.5%2011.99%2014%209.5%2014z%22%3E%3C/path%3E%3C/g%3E%3C/svg%3E);background-repeat:no-repeat;background-size:1.5em 1.5em;background-position:50% 50%;color:#fff;width:2.75em;height:2.75em;box-shadow:0 0 30px -10px rgba(0,0,0,0.4);z-index:100;margin:0;padding:0;border:0 none;cursor:pointer;}#' + _UI.search + '{top:2em;right:2.5em;border:0.4em solid #4183C4;width:auto;height:auto;opacity:0;visibility:hidden;-webkit-transform:scaleX(0);transform:scaleX(0);-webkit-transform-origin:100% 50%;transform-origin:100% 50%;}html[data-searchinit] #' + _UI.search + '{opacity:1;visibility:visible;-webkit-transform:scaleX(1);transform:scaleX(1);}html[data-searchinit] #' + _UI.button + ',#' + _UI.close + '{background-image:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2248%22%20height%3D%2248%22%20viewBox%3D%220%200%2048%2048%22%3E%3Cpath%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%223%22%20stroke-miterlimit%3D%2210%22%20d%3D%22M32.5%2016.5l-16%2016m16%200l-16-16%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E);background-size:2em 2em;background-repeat:no-repeat;background-position:50% 50%;}#' + _UI.button + ':hover{background-color:#3e7ab6}#' + _UI.search + '>input{display:block;border:0;padding:0.25em 0.75em;height:2em;width:auto;-webkit-border-radius:0;border-radius:0;}#' + _UI.results + '{display:none;position:fixed;top:0;left:0;right:0;bottom:0;height:100vh;padding:1em;background:rgba(0,0,0,.8);-webkit-overflow-scrolling:touch;}#' + _UI.results + '>div>a{display:block;background:#fff;padding:1em;line-height:1.3;margin-bottom:1em;}#' + _UI.close + '{position:fixed;top:2.5em;right:3em;box-shadow:0 0 30px -10px rgba(0,0,0,0.4);width:2.75em;height:2.75em;margin:0;padding:0;border:0 none;cursor:pointer;}#' + _UI.results + '>div{margin:0 auto 0 auto;max-width:40em;padding:1em 1.5em 1.3em 1.5em;}#' + _UI.results + '>div>h2{color:#fff;font-size:22px;margin:0.2em 0 0.8em 0;padding:0 1.5em 0.2em 0;}html[data-displayresults]{overflow:hidden}html[data-displayresults] #' + _UI.button + '{display:none;}html[data-displayresults] #' + _UI.results + '{display:block;overflow-x:hidden;overflow-y:scroll;}</style>');
 
   // prep default values for data source
-  _src = location.origin;
-  _src_el = 'html';
-  _append_to = 'body';
-
-  // Initiate request for index and attach submit events
-  win.jsearch = {
-    'init': init
-  };
+  // open jsearch public method
+  _src        = location.origin;
+  _src_el     = 'html';
+  _append_to  = 'body';
+  _attrs      = ['href', 'title'];
+  win.jsearch = { 'init': init };
 
   // Index available content by scraping the homepage and retrieving HTMLAnchor elements within
   // the #links element.
@@ -51,8 +49,9 @@
       _src       = !!config.src       ? config.src       : _src;       // url to scrape
       _src_el    = !!config.src_el    ? config.src_el    : _src;       // element to scrape (if not whole page)
       _append_to = !!config.append_to ? config.append_to : _append_to; // element to append search button to
+      _attrs     = !!config.attrs     ? config.attrs     : _attrs;     // attributes to search through
     }
-    
+
     // If the browser seems like it will cut the mustard, add the search button, input bar and results panel
     doc.querySelector(_append_to).insertAdjacentHTML('beforeend', '<button id="' + _UI.button + '" tabindex="1"></button><form method="GET" action="/" id="' + _UI.search + '"><input type="text" title="Search for a particular example" required></form><div id="' + _UI.results + '" aria-hidden="true" hidden><button id="' + _UI.close + '" tabindex="1"></button><div><h2></h2></div></div>');
 
@@ -61,7 +60,7 @@
     _search       = doc.getElementById(_UI.search);
     _results      = doc.getElementById(_UI.results);
     _close        = doc.getElementById(_UI.close);
-  
+
     // Search button event wireup, enabling the user to open the search input box
     _searchbutton.addEventListener('click', showForm, false);
 
@@ -71,16 +70,24 @@
     // Using responseType is cleaner, but we'd be throwing already limited IE support out of the window
     _xhr.onload = function() {
       var _doc = new DOMParser().parseFromString(this.responseText, 'text/html')
-      if (!_doc.querySelector(_src_el)) { return; }
+
+      // no source element to scrape? ABORT
+      if (!_doc.querySelector(_src_el)) {
+        return;
+      }
+
+      // [].slice.call to convert NodeList to Array (so we can map/reduce/filter it to death)
       _links = [].slice.call(_doc.querySelector(_src_el).getElementsByTagName('a'));
 
       // We don't need or want to wire up these events until we have an index of links to search through
       _search.addEventListener('submit', handleSearchAttempt, false);
       _close.addEventListener('click', resetSearchResults, false);
     };
+
     _xhr.onerror = _xhr.ontimeout = _xhr.onabort = function() {
       console.warn('Error with request: ' + this.status);
     };
+
     _xhr.send(null);
   }
 
@@ -106,6 +113,7 @@
 
   // Reveal search results panel and populate with data
   function displaySearchResults(query, results) {
+
     // We're using data-attributes to govern CSS properties of the search form/results panel
     _root.setAttribute('data-displayresults','true');
     _root.removeAttribute('data-searchinit');
@@ -129,15 +137,22 @@
   // Grind the index down using clean, functional methods
   function getSearchResults (query, data) {
     return data.filter(function(link) {
-      var _attrs = [
-        !!link.getAttribute('href')  ? link.getAttribute('href').toLowerCase()  : '', 
-        !!link.textContent           ? link.textContent.toLowerCase()           : '', 
-        !!link.getAttribute('title') ? link.getAttribute('title').toLowerCase() : ''
-      ];
-      return !!occursAtLeastOnce(query.toLowerCase(), _attrs);
+
+      // convert string specification from config/defaults to actual node attribute content
+      var _attr_vals = _attrs.map(function(attr) {
+        return !!link.getAttribute(attr) ? link.getAttribute(attr) : '';
+      });
+
+      // inject textcontent without being specified
+      // textcontent is not an attribute, so we can't get it from the config without
+      // a total mess of ifs/elses
+      // but fortunately it's the one thing that will definitely be worth checking
+      _attr_vals[(_attr_vals.length)] = !!link.textContent ? link.textContent.toLowerCase() : '';
+
+      return !!occursAtLeastOnce(query.toLowerCase(), _attr_vals);
     }).map(function(link) {
-      var _title = link.getAttribute('title');
-      var _url = link.getAttribute('href');
+      var _title   = !!link.getAttribute('title') ? link.getAttribute('title') : '';
+      var _url     = !!link.getAttribute('href')  ? link.getAttribute('href')  : '';
       var _content = sanitize(link.textContent);
       return {
         'title': _title,
@@ -166,6 +181,9 @@
   // Sort the array by shortest distance and return shortest distance item
   // This enables us to check href, title attributes and textContent for
   // indications of a good match.
+
+  // this does not actually need to be limited to three candidates
+  // change function name
   function bestOf (query, candidates) {
     return candidates.map(function(candidate) {
       return getLevenshteinDistance(query, candidate);
@@ -241,7 +259,7 @@
       _root.removeAttribute('data-searchinit');
     }
   }
-  
+
   function generateID(idx) {
     return ('jsrch_' + idx + '_' + new Date().getTime());
   }
@@ -249,7 +267,12 @@
 })(window, document);
 
 // Usage:
+// window.jsearch.init();
+
+// or, with options:
 // window.jsearch.init({
   // 'src':'http://simpl.info',
-  // 'src_el': '#links'
+  // 'src_el': '#links',
+  // 'append_to': 'body > main',
+  // 'attrs': ['href, 'title']
 // });
