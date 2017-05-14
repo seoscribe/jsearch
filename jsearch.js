@@ -30,7 +30,8 @@
 
   // This could always be put into main.css, but for now we can insert it dynamically:
   doc.head.insertAdjacentHTML('beforeend', 
-    '<style>#' + _UI.button + ', \
+    '<style> \
+     #' + _UI.button + ', \
      #' + _UI.search + ', \
      #' + _UI.search +'>input, \
      #' + _UI.results + ', \
