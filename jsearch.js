@@ -46,7 +46,8 @@
      #' + _UI.results + '{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:19000;height:100vh;padding:1em;background:rgba(0,0,0,.8);-webkit-overflow-scrolling:touch;} \
      #' + _UI.results + '>div>a{display:block;background:#fff;padding:1em;line-height:1.3;margin-bottom:1em;} \
      #' + _UI.close + '{position:fixed;top:2em;right:2em;box-shadow:0 0 30px -10px rgba(0,0,0,0.4);z-index:19001;width:2.75em;height:2.75em;margin:0;padding:0;border:0 none;cursor:pointer;} \
-     #' + _UI.results + '>div{margin:0 auto 0 auto;max-width:40em;padding:1em 1.5em 1.3em 1.5em;}#' + _UI.results + '>div>h2{color:#fff;font-size:22px;margin:0.2em 0 0.8em 0;padding:0 1.5em 0.2em 0;}html[data-displayresults]{overflow:hidden} \
+     #' + _UI.results + '>div{margin:0 auto 0 auto;max-width:40em;padding:1em 1.5em 1.3em 1.5em;} \
+     #' + _UI.results + '>div>h2{color:#fff;font-size:22px;margin:0.2em 0 0.8em 0;padding:0 1.5em 0.2em 0;}html[data-displayresults]{overflow:hidden} \
      html[data-displayresults] #' + _UI.button + '{display:none;} \
      html[data-displayresults] #' + _UI.results + '{display:block;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);overflow-x:hidden;overflow-y:scroll;} \
      </style>');
