@@ -25,12 +25,12 @@ where `src` is the URL of the page to scrape and `src_el` is the narrowest possi
 
 The options you can pass in are:
 
-| key       | description | example value |
-|-----------|-------------|---------------|
-| src       |             |               |
-| src_el    |             |               |
-| append_to |             |               |
-| attrs     |             |               |
+| key | type | description | default value | example value |
+|-----|------|-------------|---------------|---------------|
+| `src` | `string` | URL to the resource to be queried, be it the home page or sitemap.xml or whatever | `window.origin` | |
+| `src_el` | `string` | CSS selector string matching the element that contains nodes relevant to your search query. This is determined automatically for RSS/Atom feedsand sitemaps. | `'html'` | `'#element'` |
+| `append_to` | `string` | CSS selector matching the element to which the search widget should be attached. | `body` | `.wrapper` |
+| `attrs` | `Array` | Array of attributes you want to check. This is handled automatically if querying RSS, Atom or sitemap. | `['href', 'title']` | `['href', 'title', 'data-info']` |
 
 Say you had a list of blog article links, and the containing element of that list had an id of `blog_list` — you would init like so:
 
