@@ -29,7 +29,7 @@ The options you can pass in are:
 | Key | Type | Description | Default value | Example value |
 |-----|------|-------------|---------------|---------------|
 | `src` | `string` | URL to the resource to be queried, be it the home page or sitemap.xml or whatever | `window.origin` | `'http://mywebsite.com/archive'` |
-| `src_el` | `string` | CSS selector string matching the element that contains nodes relevant to your search query. This is determined automatically for RSS/Atom feedsand sitemaps. | `'html'` | `'#element'` |
+| `src_el` | `string` | CSS selector string matching the element that contains nodes relevant to your search query. This is determined automatically for RSS/Atom feeds and sitemaps (though not for XML generally speaking). | `'html'` | `'#element'` |
 | `append_to` | `string` | CSS selector matching the element to which the search widget should be attached. | `'body'` | `'.wrapper'` |
 | `attrs` | `array` | Array of strings corresponding to the names of the attributes you want to check. This is handled automatically if querying RSS, Atom or sitemap. A node's `textContent` is checked automatically. | `['href', 'title']` | `['href', 'title', 'data-info']` |
 
