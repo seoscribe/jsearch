@@ -99,8 +99,13 @@
     // We're using DOMParser, but the same effect could be achieved with responseType = 'document'
     // Using responseType is cleaner, but we'd be throwing already limited IE support out of the window
     _xhr.onload = function() {
-      var _doc = new DOMParser().parseFromString(this.responseText, 
-        !!(this.getResponseHeader('content-type').indexOf('xml')) ? 'application/xml' : 'text/html'
+      var _typ = this.getResponseHeader('content-type');
+      var _doc = new DOMParser().parseFromString(this.responseText, (
+        !!_typ.indexOf('xhtml') ? 
+          'application/xhtml+xml' : 
+            !!_typ.indexOf('html') ? 
+              'text/html' : 
+                'application/xml')
       );
       
       // no document? ABORT
