@@ -93,7 +93,9 @@
     // We're using DOMParser, but the same effect could be achieved with responseType = 'document'
     // Using responseType is cleaner, but we'd be throwing already limited IE support out of the window
     _xhr.onload = function() {
-      var _doc = new DOMParser().parseFromString(this.responseText, 'text/html')
+      var _doc = new DOMParser().parseFromString(this.responseText, 
+        !!(this.getResponseHeader('content-type').indexOf('xml')) ? 'application/xml' : 'text/html'
+      );
 
       // no source element to scrape? ABORT
       if (!_doc.querySelector(_src_el)) {
