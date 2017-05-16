@@ -113,7 +113,9 @@
           // [].slice.call to convert NodeList to Array (so we can map/reduce/filter it to death)
           _links = [].slice.call(
             _doc.getElementsByTagName('url')
-              );
+              ).map(function (url) {
+                return url.querySelector('loc');
+              });
           break;
 
         // RSS
