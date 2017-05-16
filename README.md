@@ -1,15 +1,20 @@
-# jsearch
+# JSearch
+### A drop-in search widget for static sites
 
-A drop-in search widget for static sites, esp. those without a sitemap that can be queried.
+JSearch literally scrapes a target URL, matches internal links in the response's markup and uses it as a data source to match a keyword/phrase.
 
-jsearch literally scrapes a target URL and matches links (within a specified element in the scraped document) and uses it as a data source to match a keyword/phrase using Levenshtein distance.
+Matching is done by using Levenshtein distance. At the moment, this is done as a 'best of [x]' rather than mean average.
 
 ## Usage
-Include jsearch as an external JS library and init with:
+Include JSearch as an external JS library:
+    
+    <script async src="/path/to/jsearch.js"></script>
+
+and initialise with:
 
     window.jsearch.init();
     
-Optionally passing in a config object:
+OR you can pass in a configuration object:
 
     window.jsearch.init({
       'src': 'http://www.mywebsite.com',
@@ -17,6 +22,15 @@ Optionally passing in a config object:
     });
     
 where `src` is the URL of the page to scrape and `src_el` is the narrowest possible scope to query from the scraped document, as a CSS selector for a container element.
+
+The options you can pass in are:
+
+| key       | description | example value |
+|-----------|-------------|---------------|
+| src       |             |               |
+| src_el    |             |               |
+| append_to |             |               |
+| attrs     |             |               |
 
 Say you had a list of blog article links, and the containing element of that list had an id of `blog_list` — you would init like so:
 
