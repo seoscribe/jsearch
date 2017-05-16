@@ -112,7 +112,7 @@
       if (!_doc || !_doc.documentElement) { return; }
       
       // Set this now that we know what the root element is
-      _src_el = !!config.src_el ? config.src_el : _doc.documentElement.tagName;
+      _src_el = !!config && !!config.src_el ? config.src_el : _doc.documentElement.tagName;
       
       // handle XML feeds
       switch (_doc.documentElement.tagName) {
