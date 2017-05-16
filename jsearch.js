@@ -57,6 +57,7 @@
   _src        = location.origin;
   _src_el     = 'html';
   _append_to  = 'body';
+  _attrs      = ['href', 'title'];
   win.jsearch = { 'init': init };
 
   // Index available content by scraping the homepage and retrieving HTMLAnchor elements within
@@ -110,26 +111,47 @@
         // sitemap.xml
         case 'urlset':
           // [].slice.call to convert NodeList to Array (so we can map/reduce/filter it to death)
-          _links = [].slice.call(_doc.getElementsByTagName('url'));
+          _links = [].slice.call(
+            _doc.getElementsByTagName('url')
+              );
           break;
 
         // RSS
         case 'channel':
-          _links = [].slice.call(_doc.getElementsByTagName('item'));
+          _links = [].slice.call(
+            _doc.getElementsByTagName('item')
+              ).map(function (item) { 
+                var _composite = item.querySelector('link');
+                _composite.setAttribute('title', item.querySelector('title').textContent);
+                _composite.setAttribute('href', _composite.textContent);
+                //=> <link title="title" href="http://url.com">http://url.com</link>
+                return _composite;
+              });
           break;
         
         // atom
         case 'feed':
-          _links = [].slice.call(_doc.getElementsByTagName('entry'));
+          _links = [].slice.call(
+            _doc.getElementsByTagName('entry')
+              ).map(function (entry) {
+                var _composite = entry.querySelector('link');
+                _composite.setAttribute('title', entry.querySelector('title').textContent);
+                //=> <link title="title" href="http://url.com"/>
+                return _composite;
+              });
           break;
           
         case 'html':
           _links = [].slice.call(_doc.querySelector(_src_el).getElementsByTagName('a'));
-          _attrs = ['href', 'title'];
           break;
         
         default:
-          console.error('Invalid document; no root element');
+          _links = [].slice.call(
+            _doc.querySelector(_src_el)
+              .getElementsByTagName('*')
+                ).filter(function (el) { 
+                  return !!el.getAttribute('href');
+                });
           return;
       }
 
