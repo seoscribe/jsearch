@@ -1,5 +1,5 @@
 # JSearch
-## A drop-in search widget for static sites
+#### A drop-in search widget for static sites
 
 JSearch literally scrapes a target URL, matches internal links in the response's markup and uses it as a data source to match a keyword/phrase.
 
