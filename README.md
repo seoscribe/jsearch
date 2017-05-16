@@ -25,16 +25,24 @@ where `src` is the URL of the page to scrape and `src_el` is the narrowest possi
 
 The options you can pass in are:
 
-| key | type | description | default value | example value |
+| Key | Type | Description | Default value | Example value |
 |-----|------|-------------|---------------|---------------|
 | `src` | `string` | URL to the resource to be queried, be it the home page or sitemap.xml or whatever | `window.origin` | `'http://mywebsite.com/archive'` |
 | `src_el` | `string` | CSS selector string matching the element that contains nodes relevant to your search query. This is determined automatically for RSS/Atom feedsand sitemaps. | `'html'` | `'#element'` |
 | `append_to` | `string` | CSS selector matching the element to which the search widget should be attached. | `'body'` | `'.wrapper'` |
 | `attrs` | `array` | Array of attributes you want to check. This is handled automatically if querying RSS, Atom or sitemap. | `['href', 'title']` | `['href', 'title', 'data-info']` |
 
-Say you had a list of blog article links, and the containing element of that list had an id of `blog_list` — you would init like so:
+So, if you had:
+- a list of blog article links on an archive page
+- and the containing element of that list had an id of `blog_list`
+- you wanted to append the search widget to a width-constraining wrapper element
+- you wanted to check href, title and data-summary attributes
+
+then you would init like so:
 
     window.jsearch.init({
-      'src': 'http://www.myblog.com',
-      'src_el': '#blog_list'
+      'src': 'http://www.myblog.com/archive',
+      'src_el': '#blog_list',
+      'append_to': '#wrapper',
+      'attrs': ['href', 'title', 'data-summary']
     });
