@@ -46,3 +46,5 @@ then you would init like so:
       'append_to': '#wrapper',
       'attrs': ['href', 'title', 'data-summary']
     });
+
+Obviously, the fewer nodes JSearch has to look through, the faster it will be, so if you can try to provide a `src_el` element if you're scraping a web page.
