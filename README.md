@@ -31,7 +31,7 @@ The options you can pass in are:
 | `src` | `string` | URL to the resource to be queried, be it the home page or sitemap.xml or whatever | `window.origin` | `'http://mywebsite.com/archive'` |
 | `src_el` | `string` | CSS selector string matching the element that contains nodes relevant to your search query. This is determined automatically for RSS/Atom feedsand sitemaps. | `'html'` | `'#element'` |
 | `append_to` | `string` | CSS selector matching the element to which the search widget should be attached. | `'body'` | `'.wrapper'` |
-| `attrs` | `array` | Array of attributes you want to check. This is handled automatically if querying RSS, Atom or sitemap. | `['href', 'title']` | `['href', 'title', 'data-info']` |
+| `attrs` | `array` | Array of strings corresponding to the names of the attributes you want to check. This is handled automatically if querying RSS, Atom or sitemap. A node's `textContent` is checked automatically. | `['href', 'title']` | `['href', 'title', 'data-info']` |
 
 So, if you had:
 - a list of blog article links on an archive page
@@ -49,4 +49,4 @@ then you would init like so:
     });
 
 ## A note on performance
-Obviously, the fewer nodes JSearch has to look through, the faster it will be, so if you can try to provide a `src_el` element if you're scraping a web page.
+Obviously, the fewer nodes and attributes JSearch has to look through, the faster it will be, so if you can try to provide a `src_el` element if you're scraping a web page.
