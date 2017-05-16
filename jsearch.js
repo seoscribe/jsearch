@@ -154,6 +154,7 @@
           break;
         
         default:
+          _src_el = !config.src_el ? _doc.documentElement.tagName : _src_el;
           _links = [].slice.call(
             _doc.querySelector(_src_el)
               .getElementsByTagName('*')
