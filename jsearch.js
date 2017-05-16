@@ -77,7 +77,15 @@
     }
 
     // If the browser seems like it will cut the mustard, add the search button, input bar and results panel
-    doc.querySelector(_append_to).insertAdjacentHTML('beforeend', '<button id="' + _UI.button + '" tabindex="1"></button><form method="GET" action="/" id="' + _UI.search + '"><input type="text" title="Search for a particular example" required></form><div id="' + _UI.results + '" aria-hidden="true" hidden><button id="' + _UI.close + '" tabindex="1"></button><div><h2></h2></div></div>');
+    doc.querySelector(_append_to).insertAdjacentHTML('beforeend', 
+      '<button id="' + _UI.button + '" tabindex="1"></button> \
+       <form method="GET" action="/" id="' + _UI.search + '"> \
+         <input type="text" title="Search for a particular example" required> \
+       </form> \
+       <div id="' + _UI.results + '" aria-hidden="true" hidden> \
+         <button id="' + _UI.close + '" tabindex="1"></button> \
+         <div><h2></h2></div> \
+       </div>');
 
     // Now we've added that HTML, let's store some references
     _searchbutton = doc.getElementById(_UI.button);
