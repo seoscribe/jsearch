@@ -35,8 +35,8 @@ The options you can pass in are:
 So, if you had:
 - a list of blog article links on an archive page
 - and the containing element of that list had an id of `blog_list`
-- you wanted to append the search widget to a width-constraining wrapper element
-- you wanted to check href, title and data-summary attributes
+- you wanted to append the search widget to a width-constraining element with an id of `wrapper`
+- you wanted to check `href`, `title` and `data-summary` attributes
 
 then you would init like so:
 
