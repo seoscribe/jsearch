@@ -56,7 +56,7 @@
   // prep default values for data source
   // open jsearch public method
   _src        = location.origin;
-  _src_el     = 'html';
+  _src_el     = '';
   _append_to  = 'body';
   _attrs      = ['href', 'title'];
   win.jsearch = { 'init': init };
@@ -69,7 +69,6 @@
 
     if (typeof config !== 'undefined') {
       _src       = !!config.src       ? config.src       : _src;       // url to scrape
-      _src_el    = !!config.src_el    ? config.src_el    : _src;       // element to scrape (if not whole page)
       _append_to = !!config.append_to ? config.append_to : _append_to; // element to append search button to
       _attrs     = !!config.attrs     ? config.attrs     : _attrs;     // attributes to search through
     }
@@ -110,6 +109,9 @@
       
       // no document? ABORT
       if (!_doc || !_doc.documentElement) { return; }
+      
+      // set this now that we know what the root element is
+      _src_el = !!config.src_el ? config.src_el : _doc.documentElement.tagName;
       
       // handle XML feeds
       switch (_doc.documentElement.tagName) {
@@ -154,7 +156,6 @@
           break;
         
         default:
-          _src_el = !config.src_el ? _doc.documentElement.tagName : _src_el;
           _links = [].slice.call(
             _doc.querySelector(_src_el)
               .getElementsByTagName('*')
