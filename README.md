@@ -1,11 +1,11 @@
 # JSearch
-### A drop-in search widget for static sites
+## A drop-in search widget for static sites
 
 JSearch literally scrapes a target URL, matches internal links in the response's markup and uses it as a data source to match a keyword/phrase.
 
 Matching is done by using Levenshtein distance. At the moment, this is done as a 'best of [x]' rather than mean average.
 
-### Usage
+## Usage
 Include JSearch as an external JS library:
     
     <script async src="/path/to/jsearch.js"></script>
@@ -23,7 +23,7 @@ OR you can pass in a configuration object:
     
 where `src` is the URL of the page to scrape and `src_el` is the narrowest possible scope to query from the scraped document, as a CSS selector for a container element.
 
-### Configuration options
+## Configuration options
 The options you can pass in are:
 
 | Key | Type | Description | Default value | Example value |
@@ -48,5 +48,5 @@ then you would init like so:
       'attrs': ['href', 'title', 'data-summary']
     });
 
-### Performance
+## A note on performance
 Obviously, the fewer nodes JSearch has to look through, the faster it will be, so if you can try to provide a `src_el` element if you're scraping a web page.
