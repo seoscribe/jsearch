@@ -23,6 +23,7 @@
     'close': ''
   };
 
+  // Create IDs for injected HTML elements on the fly
   for (; Object.keys(_UI).length > j; ++j) { _UI[Object.keys(_UI)[j]] = generateID(j); }
 
   // This could always be put into main.css, but for now we can insert it dynamically:
@@ -53,20 +54,21 @@
      html[data-displayresults] #' + _UI.results + '{display:block;-webkit-backdrop-filter:blur(4px);overflow-x:hidden;overflow-y:scroll;} \
      </style>');
 
-  // prep default values for data source
-  // open jsearch public method
+  // Prepare default values for data source
   _src        = location.origin;
   _src_el     = '';
   _append_to  = 'body';
   _attrs      = ['href', 'title'];
+  
+  // Open JSearch public method
   win.jsearch = { 'init': init };
 
-  // Index available content by scraping the homepage and retrieving HTMLAnchor elements within
-  // the #links element.
+  // Index available content by scraping the homepage and retrieving HTMLAnchor elements within the #links element.
   // Attach the remaining event listeners only upon successful downloading of the document index
   function init(config) {
     var _xhr = new XMLHttpRequest();
 
+    // Update with configuration object 
     if (typeof config !== 'undefined') {
       _src       = !!config.src       ? config.src       : _src;       // url to scrape
       _append_to = !!config.append_to ? config.append_to : _append_to; // element to append search button to
@@ -92,7 +94,6 @@
 
     // Search button event wireup, enabling the user to open the search input box
     _searchbutton.addEventListener('click', showForm, false);
-
     _xhr.open('GET', _src, true);
 
     // We're using DOMParser, but the same effect could be achieved with responseType = 'document'
@@ -110,7 +111,7 @@
       // no document? ABORT
       if (!_doc || !_doc.documentElement) { return; }
       
-      // set this now that we know what the root element is
+      // Set this now that we know what the root element is
       _src_el = !!config.src_el ? config.src_el : _doc.documentElement.tagName;
       
       // handle XML feeds
@@ -156,6 +157,7 @@
           break;
         
         default:
+          // Handles an atypical XML document data source
           _links = [].slice.call(
             _doc.querySelector(_src_el)
               .getElementsByTagName('*')
