@@ -164,7 +164,6 @@
                 ).filter(function (el) { 
                   return !!el.getAttribute('href');
                 });
-          return;
       }
 
       // We don't need or want to wire up these events until we have an index of links to search through
