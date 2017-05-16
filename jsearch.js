@@ -6,9 +6,8 @@
   // The ability to parse text/html landed in IE10, but we can't test for that without try/catch obliterating V8 optimization.
   if (!('map' in [] && 'filter' in [] && 'reduce' in [] && 'DOMParser' in win && 'compile' in RegExp.prototype)) { return; }
 
-  if (!('origin' in win)) {
-    location.origin = location.protocol + '//' + location.host;
-  }
+  // polyfill location.origin for default XHR target settings
+  if (!('origin' in location)) { location.origin = location.protocol + '//' + location.host; }
 
   // Keep a reference to <html> for later
   var _root = doc.documentElement;
@@ -24,9 +23,7 @@
     'close': ''
   };
 
-  for (; Object.keys(_UI).length > j; ++j) {
-    _UI[Object.keys(_UI)[j]] = generateID(j);
-  }
+  for (; Object.keys(_UI).length > j; ++j) { _UI[Object.keys(_UI)[j]] = generateID(j); }
 
   // This could always be put into main.css, but for now we can insert it dynamically:
   doc.head.insertAdjacentHTML('beforeend', 
@@ -60,7 +57,6 @@
   _src        = location.origin;
   _src_el     = 'html';
   _append_to  = 'body';
-  _attrs      = ['href', 'title'];
   win.jsearch = { 'init': init };
 
   // Index available content by scraping the homepage and retrieving HTMLAnchor elements within
@@ -104,14 +100,38 @@
       var _doc = new DOMParser().parseFromString(this.responseText, 
         !!(this.getResponseHeader('content-type').indexOf('xml')) ? 'application/xml' : 'text/html'
       );
+      
+      // no document? ABORT
+      if (!_doc || !_doc.documentElement) { return; }
+      
+      // handle XML feeds
+      switch (_doc.documentElement.tagName) {
+          
+        // sitemap.xml
+        case 'urlset':
+          // [].slice.call to convert NodeList to Array (so we can map/reduce/filter it to death)
+          _links = [].slice.call(_doc.getElementsByTagName('url'));
+          break;
 
-      // no source element to scrape? ABORT
-      if (!_doc.querySelector(_src_el)) {
-        return;
+        // RSS
+        case 'channel':
+          _links = [].slice.call(_doc.getElementsByTagName('item'));
+          break;
+        
+        // atom
+        case 'feed':
+          _links = [].slice.call(_doc.getElementsByTagName('entry'));
+          break;
+          
+        case 'html':
+          _links = [].slice.call(_doc.querySelector(_src_el).getElementsByTagName('a'));
+          _attrs = ['href', 'title'];
+          break;
+        
+        default:
+          console.error('Invalid document; no root element');
+          return;
       }
-
-      // [].slice.call to convert NodeList to Array (so we can map/reduce/filter it to death)
-      _links = [].slice.call(_doc.querySelector(_src_el).getElementsByTagName('a'));
 
       // We don't need or want to wire up these events until we have an index of links to search through
       _search.addEventListener('submit', handleSearchAttempt, false);
