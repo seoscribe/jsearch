@@ -49,7 +49,7 @@
      #' + _UI.results + '>div{margin:0 auto 0 auto;max-width:40em;padding:1em 1.5em 1.3em 1.5em;} \
      #' + _UI.results + '>div>h2{color:#fff;font-size:22px;margin:0.2em 0 0.8em 0;padding:0 1.5em 0.2em 0;}html[data-displayresults]{overflow:hidden} \
      html[data-displayresults] #' + _UI.button + '{display:none;} \
-     html[data-displayresults] #' + _UI.results + '{display:block;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);overflow-x:hidden;overflow-y:scroll;} \
+     html[data-displayresults] #' + _UI.results + '{display:block;-webkit-backdrop-filter:blur(4px);overflow-x:hidden;overflow-y:scroll;} \
      </style>');
 
   // prep default values for data source
