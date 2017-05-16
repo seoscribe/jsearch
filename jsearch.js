@@ -6,9 +6,8 @@
   // The ability to parse text/html landed in IE10, but we can't test for that without try/catch obliterating V8 optimization.
   if (!('map' in [] && 'filter' in [] && 'reduce' in [] && 'DOMParser' in win && 'compile' in RegExp.prototype)) { return; }
 
-  if (!('origin' in win)) {
-    location.origin = location.protocol + '//' + location.host;
-  }
+  // polyfill location.origin for default XHR target settings
+  if (!('origin' in location)) { location.origin = location.protocol + '//' + location.host; }
 
   // Keep a reference to <html> for later
   var _root = doc.documentElement;
@@ -24,9 +23,7 @@
     'close': ''
   };
 
-  for (; Object.keys(_UI).length > j; ++j) {
-    _UI[Object.keys(_UI)[j]] = generateID(j);
-  }
+  for (; Object.keys(_UI).length > j; ++j) { _UI[Object.keys(_UI)[j]] = generateID(j); }
 
   // This could always be put into main.css, but for now we can insert it dynamically:
   doc.head.insertAdjacentHTML('beforeend', 
@@ -44,7 +41,8 @@
      #' + _UI.search + '{bottom:2.5em;right:3em;border:0.4em solid #4183C4;z-index:19000;width:auto;height:auto;opacity:0;visibility:hidden;-webkit-transform:scaleX(0);transform:scaleX(0);-webkit-transform-origin:100% 50%;transform-origin:100% 50%;} \
      html[data-searchinit] #' + _UI.search + '{opacity:1;visibility:visible;-webkit-transform:scaleX(1);transform:scaleX(1);} \
      html[data-searchinit] #' + _UI.button + ', \
-     #' + _UI.close + '{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2248%22%20height%3D%2248%22%20viewBox%3D%220%200%2048%2048%22%3E%3Cpath%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%223%22%20stroke-miterlimit%3D%2210%22%20d%3D%22M32.5%2016.5l-16%2016m16%200l-16-16%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E");background-size:2em 2em;background-repeat:no-repeat;background-position:50% 50%;}#' + _UI.button + ':hover{background-color:#3e7ab6} \
+     #' + _UI.close + '{background-color:transparent;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2248%22%20height%3D%2248%22%20viewBox%3D%220%200%2048%2048%22%3E%3Cpath%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%223%22%20stroke-miterlimit%3D%2210%22%20d%3D%22M32.5%2016.5l-16%2016m16%200l-16-16%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E");background-size:2em 2em;background-repeat:no-repeat;background-position:50% 50%;} \
+     #' + _UI.button + ':hover{background-color:#3e7ab6} \
      #' + _UI.search + '>input{display:block;border:0;padding:0.25em 0.75em;height:2em;width:auto;-webkit-border-radius:0;border-radius:0;} \
      #' + _UI.results + '{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:19000;height:100vh;padding:1em;background:rgba(0,0,0,.8);-webkit-overflow-scrolling:touch;} \
      #' + _UI.results + '>div>a{display:block;background:#fff;padding:1em;line-height:1.3;margin-bottom:1em;} \
@@ -52,7 +50,7 @@
      #' + _UI.results + '>div{margin:0 auto 0 auto;max-width:40em;padding:1em 1.5em 1.3em 1.5em;} \
      #' + _UI.results + '>div>h2{color:#fff;font-size:22px;margin:0.2em 0 0.8em 0;padding:0 1.5em 0.2em 0;}html[data-displayresults]{overflow:hidden} \
      html[data-displayresults] #' + _UI.button + '{display:none;} \
-     html[data-displayresults] #' + _UI.results + '{display:block;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);overflow-x:hidden;overflow-y:scroll;} \
+     html[data-displayresults] #' + _UI.results + '{display:block;-webkit-backdrop-filter:blur(4px);overflow-x:hidden;overflow-y:scroll;} \
      </style>');
 
   // prep default values for data source
@@ -77,7 +75,15 @@
     }
 
     // If the browser seems like it will cut the mustard, add the search button, input bar and results panel
-    doc.querySelector(_append_to).insertAdjacentHTML('beforeend', '<button id="' + _UI.button + '" tabindex="1"></button><form method="GET" action="/" id="' + _UI.search + '"><input type="text" title="Search for a particular example" required></form><div id="' + _UI.results + '" aria-hidden="true" hidden><button id="' + _UI.close + '" tabindex="1"></button><div><h2></h2></div></div>');
+    doc.querySelector(_append_to).insertAdjacentHTML('beforeend', 
+      '<button id="' + _UI.button + '" tabindex="1"></button> \
+       <form method="GET" action="/" id="' + _UI.search + '"> \
+         <input type="text" title="Search for a particular example" required> \
+       </form> \
+       <div id="' + _UI.results + '" aria-hidden="true" hidden> \
+         <button id="' + _UI.close + '" tabindex="1"></button> \
+         <div><h2></h2></div> \
+       </div>');
 
     // Now we've added that HTML, let's store some references
     _searchbutton = doc.getElementById(_UI.button);
@@ -93,15 +99,69 @@
     // We're using DOMParser, but the same effect could be achieved with responseType = 'document'
     // Using responseType is cleaner, but we'd be throwing already limited IE support out of the window
     _xhr.onload = function() {
-      var _doc = new DOMParser().parseFromString(this.responseText, 'text/html')
+      var _typ = this.getResponseHeader('content-type');
+      var _doc = new DOMParser().parseFromString(this.responseText, (
+        !!_typ.indexOf('xhtml') ? 
+          'application/xhtml+xml' : 
+            !!_typ.indexOf('html') ? 
+              'text/html' : 
+                'application/xml')
+      );
+      
+      // no document? ABORT
+      if (!_doc || !_doc.documentElement) { return; }
+      
+      // handle XML feeds
+      switch (_doc.documentElement.tagName) {
+          
+        // sitemap.xml
+        case 'urlset':
+          // [].slice.call to convert NodeList to Array (so we can map/reduce/filter it to death)
+          _links = [].slice.call(
+            _doc.getElementsByTagName('url')
+              ).map(function (url) {
+                return url.querySelector('loc');
+              });
+          break;
 
-      // no source element to scrape? ABORT
-      if (!_doc.querySelector(_src_el)) {
-        return;
+        // RSS
+        case 'channel':
+          _links = [].slice.call(
+            _doc.getElementsByTagName('item')
+              ).map(function (item) { 
+                var _composite = item.querySelector('link');
+                _composite.setAttribute('title', item.querySelector('title').textContent);
+                _composite.setAttribute('href', _composite.textContent);
+                //=> <link title="title" href="http://url.com">http://url.com</link>
+                return _composite;
+              });
+          break;
+        
+        // atom
+        case 'feed':
+          _links = [].slice.call(
+            _doc.getElementsByTagName('entry')
+              ).map(function (entry) {
+                var _composite = entry.querySelector('link');
+                _composite.setAttribute('title', entry.querySelector('title').textContent);
+                //=> <link title="title" href="http://url.com"/>
+                return _composite;
+              });
+          break;
+          
+        case 'html':
+          _links = [].slice.call(_doc.querySelector(_src_el).getElementsByTagName('a'));
+          break;
+        
+        default:
+          _links = [].slice.call(
+            _doc.querySelector(_src_el)
+              .getElementsByTagName('*')
+                ).filter(function (el) { 
+                  return !!el.getAttribute('href');
+                });
+          return;
       }
-
-      // [].slice.call to convert NodeList to Array (so we can map/reduce/filter it to death)
-      _links = [].slice.call(_doc.querySelector(_src_el).getElementsByTagName('a'));
 
       // We don't need or want to wire up these events until we have an index of links to search through
       _search.addEventListener('submit', handleSearchAttempt, false);
