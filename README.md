@@ -27,10 +27,10 @@ The options you can pass in are:
 
 | key | type | description | default value | example value |
 |-----|------|-------------|---------------|---------------|
-| `src` | `string` | URL to the resource to be queried, be it the home page or sitemap.xml or whatever | `window.origin` | |
+| `src` | `string` | URL to the resource to be queried, be it the home page or sitemap.xml or whatever | `window.origin` | `'http://mywebsite.com/archive'` |
 | `src_el` | `string` | CSS selector string matching the element that contains nodes relevant to your search query. This is determined automatically for RSS/Atom feedsand sitemaps. | `'html'` | `'#element'` |
-| `append_to` | `string` | CSS selector matching the element to which the search widget should be attached. | `body` | `.wrapper` |
-| `attrs` | `Array` | Array of attributes you want to check. This is handled automatically if querying RSS, Atom or sitemap. | `['href', 'title']` | `['href', 'title', 'data-info']` |
+| `append_to` | `string` | CSS selector matching the element to which the search widget should be attached. | `'body'` | `'.wrapper'` |
+| `attrs` | `array` | Array of attributes you want to check. This is handled automatically if querying RSS, Atom or sitemap. | `['href', 'title']` | `['href', 'title', 'data-info']` |
 
 Say you had a list of blog article links, and the containing element of that list had an id of `blog_list` — you would init like so:
 
