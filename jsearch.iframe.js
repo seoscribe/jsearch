@@ -30,7 +30,7 @@
     var _idoc;
     var _ijs;
 
-    doc.body.insertAdjacentHTML('beforeend', '<iframe id="jsearchFrame" style="margin:0;padding:0;border:0;position:fixed;bottom:25px;right:25px;width:50px;height:50px;z-index:21000;" frameborder="no" scrolling="no" allowtransparency="true" sandbox="allow-scripts allow-forms allow-same-origin" allowFullscreen="allowFullscreen"></iframe>');
+    doc.body.insertAdjacentHTML('beforeend', '<iframe id="jsearchFrame" style="margin:0;padding:0;border:0;position:fixed;bottom:25px;right:25px;width:auto;height:50px;z-index:21000;" frameborder="no" scrolling="no" allowtransparency="true" sandbox="allow-scripts allow-forms allow-same-origin" allowFullscreen="allowFullscreen"></iframe>');
     _iwn  = win.frames['jsearchFrame'].contentWindow;
 
     _idoc = _iwn.document;
