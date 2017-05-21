@@ -1,10 +1,10 @@
-;(function(win, doc) {
+;(function (win, doc) {
   'use strict';
 
   // We need these three Array methods and DOMParser() for search to work;
   // The fifth test reliably rules out IE9, which doesn't support text/html in DOMParser().parseFromString()
   // The ability to parse text/html landed in IE10, but we can't test for that without try/catch obliterating V8 optimization.
-  if (!('map' in [] && 'filter' in [] && 'reduce' in [] && 'DOMParser' in win && 'compile' in RegExp.prototype)) { return; }
+  if (!('localStorage' in win && 'map' in [] && 'filter' in [] && 'reduce' in [] && 'DOMParser' in win && 'compile' in RegExp.prototype)) { return; }
 
   // polyfill location.origin for default XHR target settings
   if (!('origin' in location)) { location.origin = location.protocol + '//' + location.host; }
@@ -14,7 +14,7 @@
 
   // These don't exist yet
   var _searchbutton, _search, _results, _close;
-  var _links, _src, _src_el, _append_to, _attrs;
+  var _links, _src, _src_el, _append_to, _attrs, _no_cache;
   var j = 0;
   var _UI = {
     'search': '',
@@ -60,13 +60,14 @@
   _src_el     = '';
   _append_to  = 'body';
   _attrs      = ['href', 'title'];
+  _no_cache   = false;
   
   // Open JSearch public method
   win.jsearch = { 'init': init };
 
   // Index available content by scraping the homepage and retrieving HTMLAnchor elements within the #links element.
   // Attach the remaining event listeners only upon successful downloading of the document index
-  function init(config) {
+  function init (config) {
     var _xhr = new XMLHttpRequest();
 
     // Update with configuration object 
@@ -74,6 +75,7 @@
       _src       = !!config.src       ? config.src       : _src;       // url to scrape
       _append_to = !!config.append_to ? config.append_to : _append_to; // element to append search button to
       _attrs     = !!config.attrs     ? config.attrs     : _attrs;     // attributes to search through
+      _no_cache  = !!config.no_cache  ? config.no_cache  : _no_cache;
     }
 
     // If the browser seems like it will cut the mustard, add the search button, input bar and results panel
@@ -115,57 +117,65 @@
       // Set this now that we know what the root element is
       _src_el = !!config && !!config.src_el ? config.src_el : _doc.documentElement.tagName;
       
-      // handle XML feeds
-      switch (_doc.documentElement.tagName) {
-          
-        // sitemap.xml
-        case 'urlset':
-          // [].slice.call to convert NodeList to Array (so we can map/reduce/filter it to death)
-          _links = [].slice.call(
-            _doc.getElementsByTagName('url')
-              ).map(function (url) {
-                return url.querySelector('loc');
-              });
-          break;
+      if (!!(win.top.localStorage.getItem('index'))) {
+        _links = win.top.localStorage.getItem('index');
+        
+      } else {
+      
+        // handle XML feeds
+        switch (_doc.documentElement.tagName) {
 
-        // RSS
-        case 'channel':
-          _links = [].slice.call(
-            _doc.getElementsByTagName('item')
-              ).map(function (item) { 
-                var _composite = item.querySelector('link');
-                _composite.setAttribute('title', item.querySelector('title').textContent);
-                _composite.setAttribute('href', _composite.textContent);
-                //=> <link title="title" href="http://url.com">http://url.com</link>
-                return _composite;
-              });
-          break;
-        
-        // atom
-        case 'feed':
-          _links = [].slice.call(
-            _doc.getElementsByTagName('entry')
-              ).map(function (entry) {
-                var _composite = entry.querySelector('link');
-                _composite.setAttribute('title', entry.querySelector('title').textContent);
-                //=> <link title="title" href="http://url.com"/>
-                return _composite;
-              });
-          break;
-          
-        case 'html':
-          _links = [].slice.call(_doc.querySelector(_src_el).getElementsByTagName('a'));
-          break;
-        
-        default:
-          // Handles an atypical XML document data source
-          _links = [].slice.call(
-            _doc.querySelector(_src_el)
-              .getElementsByTagName('*')
-                ).filter(function (el) { 
-                  return !!el.getAttribute('href');
+          // sitemap.xml
+          case 'urlset':
+            // [].slice.call to convert NodeList to Array (so we can map/reduce/filter it to death)
+            _links = [].slice.call(
+              _doc.getElementsByTagName('url')
+                ).map(function (url) {
+                  return url.querySelector('loc');
                 });
+            break;
+
+          // RSS
+          case 'channel':
+            _links = [].slice.call(
+              _doc.getElementsByTagName('item')
+                ).map(function (item) { 
+                  var _composite = item.querySelector('link');
+                  _composite.setAttribute('title', item.querySelector('title').textContent);
+                  _composite.setAttribute('href', _composite.textContent);
+                  //=> <link title="title" href="http://url.com">http://url.com</link>
+                  return _composite;
+                });
+            break;
+        
+          // atom
+          case 'feed':
+            _links = [].slice.call(
+              _doc.getElementsByTagName('entry')
+                ).map(function (entry) {
+                  var _composite = entry.querySelector('link');
+                  _composite.setAttribute('title', entry.querySelector('title').textContent);
+                  //=> <link title="title" href="http://url.com"/>
+                  return _composite;
+                });
+            break;
+
+          case 'html':
+            _links = [].slice.call(_doc.querySelector(_src_el).getElementsByTagName('a'));
+            break;
+
+          default:
+            // Handles an atypical XML document data source
+            _links = [].slice.call(
+              _doc.querySelector(_src_el)
+                .getElementsByTagName('*')
+                  ).filter(function (el) { 
+                    return !!el.getAttribute('href');
+                  });
+        }
       }
+      
+      win.top.localStorage.setItem('index', _links);
 
       // We don't need or want to wire up these events until we have an index of links to search through
       _search.addEventListener('submit', handleSearchAttempt, false);
