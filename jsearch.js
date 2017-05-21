@@ -61,7 +61,8 @@
   _append_to  = 'body';
   _attrs      = ['href', 'title'];
   _no_cache   = false;
-  _idx        = (location.host).replace('.', '') + '_' + (new Date().toISOString().substr(0, 10).replace(/\.|\:|\-/gi, '')) + '_index';
+  _idx        = (location.host).replace('.', '') + '_' + 
+                  (new Date().toISOString().substr(0, 10).replace(/\.|\:|\-/gi, '')) + '_idx';
   
   // Open JSearch public method
   win.jsearch = { 'init': init };
