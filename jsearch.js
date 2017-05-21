@@ -165,6 +165,7 @@
 
           case 'html':
             _links = [].slice.call(_doc.querySelector(_src_el).getElementsByTagName('a'));
+            console.log(_links);
             break;
 
           default:
