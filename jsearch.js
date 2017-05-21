@@ -1,14 +1,6 @@
 ;(function (win, doc) {
   'use strict';
 
-  // We need these three Array methods and DOMParser() for search to work;
-  // The fifth test reliably rules out IE9, which doesn't support text/html in DOMParser().parseFromString()
-  // The ability to parse text/html landed in IE10, but we can't test for that without try/catch obliterating V8 optimization.
-  if (!('localStorage' in win && 'map' in [] && 'filter' in [] && 'reduce' in [] && 'DOMParser' in win && 'compile' in RegExp.prototype)) { return; }
-
-  // polyfill location.origin for default XHR target settings
-  if (!('origin' in location)) { location.origin = location.protocol + '//' + location.host; }
-
   // Keep a reference to <html> for later
   var _root = doc.documentElement;
 
@@ -22,6 +14,14 @@
     'results': '',
     'close': ''
   };
+  
+  // We need these three Array methods and DOMParser() for search to work;
+  // The fifth test reliably rules out IE9, which doesn't support text/html in DOMParser().parseFromString()
+  // The ability to parse text/html landed in IE10, but we can't test for that without try/catch obliterating V8 optimization.
+  if (!('localStorage' in win && 'map' in [] && 'filter' in [] && 'reduce' in [] && 'DOMParser' in win && 'compile' in RegExp.prototype)) { return; }
+
+  // polyfill location.origin for default XHR target settings
+  if (!('origin' in location)) { location.origin = location.protocol + '//' + location.host; }
 
   // Create IDs for injected HTML elements on the fly
   for (; Object.keys(_UI).length > j; ++j) { _UI[Object.keys(_UI)[j]] = generateID(j); }
