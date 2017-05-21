@@ -14,7 +14,7 @@
 
   // These don't exist yet
   var _searchbutton, _search, _results, _close;
-  var _links, _src, _src_el, _append_to, _attrs, _no_cache;
+  var _links, _src, _src_el, _append_to, _attrs, _no_cache, _idx;
   var j = 0;
   var _UI = {
     'search': '',
@@ -61,6 +61,7 @@
   _append_to  = 'body';
   _attrs      = ['href', 'title'];
   _no_cache   = false;
+  _idx = (location.host).replace('.', '') + '_index';
   
   // Open JSearch public method
   win.jsearch = { 'init': init };
@@ -117,8 +118,9 @@
       // Set this now that we know what the root element is
       _src_el = !!config && !!config.src_el ? config.src_el : _doc.documentElement.tagName;
       
-      if (!!(win.top.localStorage.getItem('index'))) {
-        _links = win.top.localStorage.getItem('index');
+      if (!!(win.top.localStorage.getItem(_idx))) {
+        // cache full search index
+        _links = win.top.localStorage.getItem(_idx);
         
       } else {
       
@@ -175,7 +177,7 @@
         }
       }
       
-      win.top.localStorage.setItem('index', _links);
+      win.top.localStorage.setItem(_idx, _links);
 
       // We don't need or want to wire up these events until we have an index of links to search through
       _search.addEventListener('submit', handleSearchAttempt, false);
