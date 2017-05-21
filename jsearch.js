@@ -61,7 +61,7 @@
   _append_to  = 'body';
   _attrs      = ['href', 'title'];
   _no_cache   = false;
-  _idx = (location.host).replace('.', '') + '_index';
+  _idx        = (location.host).replace('.', '') + '_index';
   
   // Open JSearch public method
   win.jsearch = { 'init': init };
@@ -102,7 +102,7 @@
 
     // We're using DOMParser, but the same effect could be achieved with responseType = 'document'
     // Using responseType is cleaner, but we'd be throwing already limited IE support out of the window
-    _xhr.onload = function() {
+    _xhr.onload = function () {
       var _typ = this.getResponseHeader('content-type');
       var _doc = new DOMParser().parseFromString(this.responseText, (
         !!_typ.indexOf('xhtml') ? 
@@ -118,9 +118,9 @@
       // Set this now that we know what the root element is
       _src_el = !!config && !!config.src_el ? config.src_el : _doc.documentElement.tagName;
       
-      if (!!(win.top.localStorage.getItem(_idx))) {
+      if (!!(localStorage.getItem(_idx))) {
         // cache full search index
-        _links = win.top.localStorage.getItem(_idx);
+        _links = localStorage.getItem(_idx);
         
       } else {
       
@@ -177,7 +177,7 @@
         }
       }
       
-      win.top.localStorage.setItem(_idx, _links);
+      localStorage.setItem(_idx, _links);
 
       // We don't need or want to wire up these events until we have an index of links to search through
       _search.addEventListener('submit', handleSearchAttempt, false);
