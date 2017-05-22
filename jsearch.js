@@ -113,17 +113,16 @@
                 'application/xml')
       );
       
-      // no document? ABORT
+      // no document? parser error? ABORT
       if (!_doc || !_doc.documentElement) { return; }
+      if (!!_doc.querySelector('parsererror')) { throw new Error('Parser error: invalid markup'); }
       
       // Set this now that we know what the root element is
       _src_el = !!config && !!config.src_el ? config.src_el : _doc.documentElement.tagName;
-      console.log(_src_el);
       
       if (!!(localStorage.getItem(_idx))) {
         // cache full search index
         _links = localStorage.getItem(_idx);
-        console.log('trouble');
         
       } else {
       
@@ -167,7 +166,6 @@
 
           case 'html':
             _links = [].slice.call(_doc.querySelector(_src_el).getElementsByTagName('a'));
-            console.log(_links);
             break;
 
           default:
