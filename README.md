@@ -32,12 +32,14 @@ The options you can pass in are:
 | `src_el` | `string` | CSS selector string matching the element that contains nodes relevant to your search query. This is determined automatically for RSS/Atom feeds and sitemaps (though not for XML generally speaking). | `documentElement` | `'#element'` |
 | `append_to` | `string` | CSS selector matching the element to which the search widget should be attached. | `'body'` | `'.wrapper'` |
 | `attrs` | `array` | Array of strings corresponding to the names of the attributes you want to check. This is handled automatically if querying RSS, Atom or sitemap. A node's `textContent` is checked automatically. | `['href', 'title']` | `['href', 'title', 'data-info']` |
+| `cache` | `number` | hours to cache search index | `72` | `24` |
 
 So, if you had:
 - a list of blog article links on an archive page
 - and the containing element of that list had an id of `blog_list`
 - you wanted to append the search widget to a width-constraining element with an id of `wrapper`
 - you wanted to check `href`, `title` and `data-summary` attributes
+- you wanted to disable caching for testing purposes
 
 then you would init like so:
 
@@ -45,7 +47,8 @@ then you would init like so:
       'src': 'http://www.myblog.com/archive',
       'src_el': '#blog_list',
       'append_to': '#wrapper',
-      'attrs': ['href', 'title', 'data-summary']
+      'attrs': ['href', 'title', 'data-summary'],
+      'cache': 0
     });
 
 ## A note on performance
