@@ -6,7 +6,7 @@
 
   // These don't exist yet
   var _searchbutton, _search, _results, _close;
-  var _links, _src, _src_el, _append_to, _attrs, _no_cache, _idx;
+  var _links, _src, _src_el, _append_to, _attrs, _cache, _idx;
   var j = 0;
   var _UI = {
     'search': '',
@@ -60,7 +60,7 @@
   _src_el     = '';
   _append_to  = 'body';
   _attrs      = ['href', 'title'];
-  _no_cache   = false;
+  _cache      = true;
   _idx        = (location.host).replace('.', '') + '_' + 
                   (new Date().toISOString().substr(0, 10).replace(/\.|\:|\-/gi, '')) + '_idx';
   
@@ -77,7 +77,7 @@
       _src       = !!config.src       ? config.src       : _src;       // url to scrape
       _append_to = !!config.append_to ? config.append_to : _append_to; // element to append search button to
       _attrs     = !!config.attrs     ? config.attrs     : _attrs;     // attributes to search through
-      _no_cache  = !!config.no_cache  ? config.no_cache  : _no_cache;
+      _cache     = !!config.cache     ? config.cache     : _cache;
     }
 
     // If the browser seems like it will cut the mustard, add the search button, input bar and results panel
@@ -131,7 +131,7 @@
       // Set this now that we know what the root element is
       _src_el = !!config && !!config.src_el ? config.src_el : _doc.documentElement.tagName;
       
-      if (!_no_cache && !!(localStorage.getItem(_idx))) {
+      if (!!_cache && !!(localStorage.getItem(_idx))) {
         // cache full search index
         _links = localStorage.getItem(_idx);
         
@@ -190,7 +190,7 @@
         }
       }
       
-      if (!_no_cache) { localStorage.setItem(_idx, _links); }
+      if (!!_cache) { localStorage.setItem(_idx, _links); }
 
       // We don't need or want to wire up these events until we have an index of links to search through
       _search.addEventListener('submit', handleSearchAttempt, false);
