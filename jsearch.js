@@ -123,6 +123,7 @@
       if (!!(localStorage.getItem(_idx))) {
         // cache full search index
         _links = localStorage.getItem(_idx);
+        console.log('trouble');
         
       } else {
       
@@ -166,6 +167,7 @@
 
           case 'html':
             _links = [].slice.call(_doc.querySelector(_src_el).getElementsByTagName('a'));
+            console.log(_links);
             break;
 
           default:
@@ -180,6 +182,7 @@
       }
       
       localStorage.setItem(_idx, _links);
+      console.log(localStorage.getItem(_idx));
 
       // We don't need or want to wire up these events until we have an index of links to search through
       _search.addEventListener('submit', handleSearchAttempt, false);
