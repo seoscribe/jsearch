@@ -233,7 +233,7 @@
   }
 
   // Reveal search results panel and populate with data
-  function displaySearchResults(query, results) {
+  function displaySearchResults (query, results) {
 
     // We're using data-attributes to govern CSS properties of the search form/results panel
     _root.setAttribute('data-displayresults','true');
@@ -293,7 +293,7 @@
       return '<a href="' + result.url +
              '" title="' + result.title +
              '">' + result.content + '</a>';
-    }).reduce(function(acc, nxt) {
+    }).reduce(function (acc, nxt) {
       return acc + nxt;
     });
   }
