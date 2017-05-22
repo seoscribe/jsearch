@@ -131,7 +131,7 @@
       // Set this now that we know what the root element is
       _src_el = !!config && !!config.src_el ? config.src_el : _doc.documentElement.tagName;
       
-      if (!!(localStorage.getItem(_idx))) {
+      if (!_no_cache && !!(localStorage.getItem(_idx))) {
         // cache full search index
         _links = localStorage.getItem(_idx);
         
@@ -190,7 +190,7 @@
         }
       }
       
-      localStorage.setItem(_idx, _links);
+      if (!_no_cache) { localStorage.setItem(_idx, _links); }
 
       // We don't need or want to wire up these events until we have an index of links to search through
       _search.addEventListener('submit', handleSearchAttempt, false);
