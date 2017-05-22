@@ -118,6 +118,7 @@
       
       // Set this now that we know what the root element is
       _src_el = !!config && !!config.src_el ? config.src_el : _doc.documentElement.tagName;
+      console.log(_src_el);
       
       if (!!(localStorage.getItem(_idx))) {
         // cache full search index
@@ -165,7 +166,6 @@
 
           case 'html':
             _links = [].slice.call(_doc.querySelector(_src_el).getElementsByTagName('a'));
-            console.log(_links);
             break;
 
           default:
