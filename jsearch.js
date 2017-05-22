@@ -190,15 +190,16 @@
                     return !!el.getAttribute('href');
                   });
         }
+      
+        // set cached index
+        if (!!_cache) { 
+          localStorage.setItem(_idx, {
+            'unixdate': _d,
+            'index': encodeURIComponent(_links)
+          });
+        }
       }
       
-      if (!!_cache) { 
-        localStorage.setItem(_idx, {
-          'unixdate': _d,
-          'index': encodeURIComponent(_links)
-        });
-      }
-
       // We don't need or want to wire up these events until we have an index of links to search through
       _search.addEventListener('submit', handleSearchAttempt, false);
       _close.addEventListener('click', resetSearchResults, false);
