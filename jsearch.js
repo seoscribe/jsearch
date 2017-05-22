@@ -77,7 +77,7 @@
       _src       = !!config.src       ? config.src       : _src;       // url to scrape
       _append_to = !!config.append_to ? config.append_to : _append_to; // element to append search button to
       _attrs     = !!config.attrs     ? config.attrs     : _attrs;     // attributes to search through
-      _cache     = !!config.cache     ? config.cache     : _cache;
+      _cache     = !!config.cache     ? +(config.cache)  : _cache;     // hours to cache index (forcibly cast to number)
     }
 
     // If the browser seems like it will cut the mustard, add the search button, input bar and results panel
