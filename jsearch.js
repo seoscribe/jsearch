@@ -113,16 +113,20 @@
                 'application/xml')
       );
       
-      // no document? parser error? ABORT
-      if (!_doc || !_doc.documentElement) { return; }
-      if (!!_doc.querySelector('parsererror')) { 
+      // no document? parser error? dismantle optimistically configured widget
+      if (!_doc || !_doc.documentElement || !!_doc.querySelector('parsererror')) { 
         _searchbutton.removeEventListener('click', showForm, false);
         _searchbutton.parentNode.removeChild(_searchbutton);
         _search.parentNode.removeChild(_search);
         _results.parentNode.removeChild(_results);
         _close.parentNode.removeChild(_close);
-        throw new Error('Parser error: invalid markup'); 
       }
+      
+      // no document
+      if (!_doc || !_doc.documentElement) { throw (new Error('No document at resource')); }
+      
+      // parser error
+      if (!!_doc.querySelector('parsererror')) { throw (new Error('Parser error: invalid markup')); }
       
       // Set this now that we know what the root element is
       _src_el = !!config && !!config.src_el ? config.src_el : _doc.documentElement.tagName;
