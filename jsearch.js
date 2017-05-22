@@ -134,7 +134,7 @@
       if (!!_cache && !!(localStorage.getItem(_idx))) {
         // within cache expiration threshold
         if (!!(_d - localStorage.getItem(_idx).unixdate < _cache)) {
-          _links = localStorage.getItem(_idx);
+          _links = decodeURIComponent(localStorage.getItem(_idx).index);
         }
         // cache expired or not existent
       } else {
