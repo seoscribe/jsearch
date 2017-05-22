@@ -60,7 +60,7 @@
   _src_el     = '';
   _append_to  = 'body';
   _attrs      = ['href', 'title'];
-  _cache      = true;
+  _cache      = 24;
   _idx        = 'jsearch_' + (location.host.replace('.', ''));
   
   // Open JSearch public method
@@ -131,7 +131,9 @@
       // Set this now that we know what the root element is
       _src_el = !!config && !!config.src_el ? config.src_el : _doc.documentElement.tagName;
       
-      if (!!_cache && !!(localStorage.getItem(_idx))) {
+      // check for cache and cached index
+      if (_cache > 0 && !!(localStorage.getItem(_idx))) {
+        
         // within cache expiration threshold
         if (!!(_d - localStorage.getItem(_idx).unixdate < _cache)) {
           _links = decodeURIComponent(localStorage.getItem(_idx).index);
@@ -192,7 +194,7 @@
         }
       
         // set cached index
-        if (!!_cache) { 
+        if (_cache > 0) { 
           localStorage.setItem(_idx, {
             'unixdate': _d,
             'index': encodeURIComponent(_links)
