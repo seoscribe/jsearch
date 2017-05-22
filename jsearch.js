@@ -257,10 +257,10 @@
 
   // Grind the index down using clean, functional methods
   function getSearchResults (query, data) {
-    return data.filter(function(link) {
+    return data.filter(function (link) {
 
       // convert string specification from config/defaults to actual node attribute content
-      var _attr_vals = _attrs.map(function(attr) {
+      var _attr_vals = _attrs.map(function (attr) {
         return !!link.getAttribute(attr) ? link.getAttribute(attr) : '';
       });
 
@@ -271,7 +271,7 @@
       _attr_vals[(_attr_vals.length)] = !!link.textContent ? link.textContent.toLowerCase() : '';
 
       return !!occursAtLeastOnce(query.toLowerCase(), _attr_vals);
-    }).map(function(link) {
+    }).map(function (link) {
       var _title   = !!link.getAttribute('title') ? link.getAttribute('title') : '';
       var _url     = !!link.getAttribute('href')  ? link.getAttribute('href')  : '';
       var _content = sanitize(link.textContent);
@@ -281,7 +281,7 @@
         'content': _content,
         'ldistance': bestOf(query.toLowerCase(), [_title.toLowerCase(), _url.toLowerCase(), _content.toLowerCase()])
       };
-    }).sort(function(p, q) {
+    }).sort(function (p, q) {
       if (p.ldistance < q.ldistance) { return -1; }
       if (p.ldistance > q.ldistance) { return 1; }
       return 0;
@@ -289,7 +289,7 @@
   }
 
   function generateMarkup (results) {
-    return results.map(function(result) {
+    return results.map(function (result) {
       return '<a href="' + result.url +
              '" title="' + result.title +
              '">' + result.content + '</a>';
@@ -306,30 +306,30 @@
   // this does not actually need to be limited to three candidates
   // change function name
   function bestOf (query, candidates) {
-    return candidates.map(function(candidate) {
+    return candidates.map(function (candidate) {
       return getLevenshteinDistance(query, candidate);
-    }).sort(function(p, q) {
+    }).sort(function (p, q) {
       if (p < q) { return -1; }
       if (p > q) { return 1; }
       return 0;
-    }).filter(function(item, idx) {
+    }).filter(function (item, idx) {
       return idx === 0;
     });
   }
 
   // Substitute for String.protoype.includes(), but for an array of strings
   function occursAtLeastOnce (query, data) {
-    return data.map(function(datum) {
+    return data.map(function (datum) {
       if (datum.length < query.length) { return false; }
       return datum.indexOf(query) !== -1;
-    }).reduce(function(w, x) {
+    }).reduce(function (w, x) {
       return !!(w || x);
     });
   }
 
   // Calculate levenshtein distance reasonably quickly
   // This could probably be faster
-  function getLevenshteinDistance(string, to_match) {
+  function getLevenshteinDistance (string, to_match) {
     var distance, row1, row2, i, j;
     for (row2 = [i = 0]; string[i]; ++i) {
       for (row1 = [j = 0]; to_match[++j];) {
@@ -348,17 +348,17 @@
 
   // Basic sanitizer for element.textContent
   // This would ideally need to be stricter/more rigorous
-  function sanitize(text) {
-    return text.split('').map(function(char) {
+  function sanitize (text) {
+    return text.split('').map(function (char) {
       return char === '<' ? '&lt;' : char === '>' ? '&gt;' : char
     ;}).join('');
   }
 
   // Delete all the results and close the search panel
-  function resetSearchResults() {
+  function resetSearchResults () {
     [].slice.call(
       _results.getElementsByTagName('a')
-    ).forEach(function(result) {
+    ).forEach(function (result) {
       result.parentNode.removeChild(result);
     });
     _results.setAttribute('aria-hidden', 'true');
@@ -369,11 +369,11 @@
   // Reveal the search bar and autofocus
   // NB: use setTimeout to time the autofocus such that the CSS transition
   // completes first, as the input element will not focus while transforming
-  function showForm() {
+  function showForm () {
     if (typeof _links !== 'object' || !Array.isArray(_links) || !_links) { return init(); }
     if (!_root.getAttribute('data-searchinit')) {
       _root.setAttribute('data-searchinit','true');
-      win.setTimeout(function() {
+      win.setTimeout(function () {
         _search.querySelector('input').focus();
       }, 220);
     } else {
@@ -383,7 +383,7 @@
 
   // Use to create unique element IDs for the injected markup
   // necessary to avoid possible conflicts with existing elements on any given page
-  function generateID(idx) {
+  function generateID (idx) {
     return ('jsrch_' + idx + '_' + new Date().getTime());
   }
 
