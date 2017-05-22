@@ -61,8 +61,7 @@
   _append_to  = 'body';
   _attrs      = ['href', 'title'];
   _cache      = true;
-  _idx        = (location.host).replace('.', '') + '_' + 
-                  (new Date().toISOString().substr(0, 10).replace(/\.|\:|\-/gi, '')) + '_idx';
+  _idx        = 'jsearch_' + (location.host.replace('.', ''));
   
   // Open JSearch public method
   win.jsearch = { 'init': init };
@@ -71,6 +70,7 @@
   // Attach the remaining event listeners only upon successful downloading of the document index
   function init (config) {
     var _xhr = new XMLHttpRequest();
+    var _d = new Date().getTime();
 
     // Update with configuration object 
     if (typeof config !== 'undefined') {
@@ -132,9 +132,11 @@
       _src_el = !!config && !!config.src_el ? config.src_el : _doc.documentElement.tagName;
       
       if (!!_cache && !!(localStorage.getItem(_idx))) {
-        // cache full search index
-        _links = localStorage.getItem(_idx);
-        
+        // within cache expiration threshold
+        if (!!(_d - localStorage.getItem(_idx).unixdate < _cache)) {
+          _links = localStorage.getItem(_idx);
+        }
+        // cache expired or not existent
       } else {
       
         // handle XML feeds
@@ -190,7 +192,12 @@
         }
       }
       
-      if (!!_cache) { localStorage.setItem(_idx, _links); }
+      if (!!_cache) { 
+        localStorage.setItem(_idx, {
+          'unixdate': _d,
+          'index': encodeURIComponent(_links)
+        });
+      }
 
       // We don't need or want to wire up these events until we have an index of links to search through
       _search.addEventListener('submit', handleSearchAttempt, false);
