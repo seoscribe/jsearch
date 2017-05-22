@@ -70,7 +70,7 @@
   // Attach the remaining event listeners only upon successful downloading of the document index
   function init (config) {
     var _xhr = new XMLHttpRequest();
-    var _d = new Date().getTime();
+    var _d = (new Date().getTime() / 1000 / 60 / 60);
 
     // Update with configuration object 
     if (typeof config !== 'undefined') {
@@ -136,9 +136,9 @@
         if (!!(_d - localStorage.getItem(_idx).unixdate < _cache)) {
           _links = decodeURIComponent(localStorage.getItem(_idx).index);
         }
-        // cache expired or not existent
+        
       } else {
-      
+        // cache expired or not existent
         // handle XML feeds
         switch (_doc.documentElement.tagName) {
 
