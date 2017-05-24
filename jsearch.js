@@ -331,7 +331,7 @@
 
   // Calculate levenshtein distance reasonably quickly
   // This could probably be faster
-  function getLevenshteinDistance2 (string, to_match) {
+  function getLevenshteinDistance (string, to_match) {
     var distance, row1, row2, i, j;
     for (row2 = [i = 0]; string[i]; ++i) {
       for (row1 = [j = 0]; to_match[++j];) {
