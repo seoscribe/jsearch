@@ -331,23 +331,29 @@
 
   // Calculate levenshtein distance reasonably quickly
   // This could probably be faster
-  function getLevenshteinDistance (string, to_match) {
+  function getLevenshteinDistance2 (string, to_match) {
     var distance, row1, row2, i, j;
     for (row2 = [i = 0]; string[i]; ++i) {
       for (row1 = [j = 0]; to_match[++j];) {
-        distance = row2[j] = !!i ?
-          Math.min(
+        distance = row2[j] = !!i ? 
+          getMin(
             row2[--j], 
             (
-              Math.min(
-              row1[j] - (string[i - 1] === to_match[j]),
-              row1[++j] = row2[j]
+              getMin(
+                row1[j] - (string[i - 1] === to_match[j]),
+                row1[++j] = row2[j]
             )
           )
-        ) + 1 : j;
+        ) + 1 : 
+        j;
       }
     }
     return distance;
+  }
+
+  // faster than Math.min
+  function getMin(one, two){
+    return one > two ? two : one;
   }
 
   // Basic sanitizer for element.textContent
