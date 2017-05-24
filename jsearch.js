@@ -335,14 +335,16 @@
     var distance, row1, row2, i, j;
     for (row2 = [i = 0]; string[i]; ++i) {
       for (row1 = [j = 0]; to_match[++j];) {
-        distance = row2[j] = i ?
+        distance = row2[j] = !!i ?
           Math.min(
             row2[--j], 
-            (Math.min(
+            (
+              Math.min(
               row1[j] - (string[i - 1] === to_match[j]),
               row1[++j] = row2[j]
-            ))
-          ) + 1 : j;
+            )
+          )
+        ) + 1 : j;
       }
     }
     return distance;
