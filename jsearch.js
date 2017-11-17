@@ -113,7 +113,7 @@
                 'application/xml')
       );
       
-      // no document? parser error? dismantle optimistically configured widget
+      // no document? parser error? dismantle the optimistically-configured widget
       if (!_doc || !_doc.documentElement || !!_doc.querySelector('parsererror')) { 
         _searchbutton.removeEventListener('click', showForm, false);
         _searchbutton.parentNode.removeChild(_searchbutton);
