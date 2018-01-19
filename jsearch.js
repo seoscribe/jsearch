@@ -3,7 +3,7 @@
   ---------
   Author(s)  : AM Douglas, Lois Atwood
   License    : BSD 3-clause Clear
-  URL        : https://github.com/seoscribe/editor
+  URL        : https://github.com/seoscribe/jsearch
   ---------
   Copyright (c) 2018, SEO Scribe Ltd
   All rights reserved.
